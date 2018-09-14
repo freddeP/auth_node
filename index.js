@@ -8,6 +8,55 @@ const bodyParser = require("body-parser");
 const app = express();
 
 app.use(("/public"),express.static(__dirname + "/public"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
+
+
+
+
+app.post("/login", function (req,res){
+
+   console.log(typeof req.body.user);
+ 
+   const user = JSON.parse(req.body.user);
+   console.log(user);
+
+    fs.readFile("./.data/users.json",function(err,data){
+
+        if(err) throw err;
+        else
+        {
+            let users = Array.from(JSON.parse(data.toString()));
+
+            const userExists = users.find(function(u){
+                    if(u.email === user.email) return true;
+            });
+            if(userExists === undefined)
+            {
+                console.log("Login Failed");
+            }
+            else
+            {
+                // Här skall vi nästa lektion undersöka om lösenorden är samma...
+                console.log("user found", userExists);
+            }
+
+        }
+
+    })
+
+
+    //hitta användare i databas med hjälp av email
+    // Om hen finns, kolla lösenord
+
+    // om lösenordet är korrekt. SKicka meddelande samt en JWT
+    // om lösenordet är inkorrekt skicka stausmeddelande
+
+
+
+
+
+});
 
 
 app.get("/createuser",function(req,res){ 
