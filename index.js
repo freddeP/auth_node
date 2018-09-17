@@ -45,14 +45,11 @@ app.post("/login", function (req,res){
                        
                         if(result) console.log("user logged in");
                         const token = jwt.sign(userExists.id,"mySecret");
-                        res.send(token);
+                       console.log(token); 
+                       res.send(token);
                     });
-
-
                 }
-
             }
-
         }); // end readfile
 
     }  // end if validate

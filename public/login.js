@@ -22,10 +22,17 @@ req.open("POST","/login",true);
 req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 req.send("user="+JSON.stringify(user));        
 
-
-req.onload(function(data){
-    console.log(data);
-});
+req.onload = function() {
+    if (req.status >= 200 && req.status < 400) {
+        // Success!
+        alert();
+        var data = req.responseText;
+        console.log(data);
+    } 
+    else {
+        // We reached our target server, but it returned an error
+    }
+}
 
 
 }
