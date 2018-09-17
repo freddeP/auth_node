@@ -8,6 +8,10 @@
     "email": "lasse@lasse.se",
     "id": 12312312313,
     "password": "$2a$12$kzonX/1YiagMR70OyxhX0udxd9HFXbCWipKW7wDcuOxTF9k6QPlxC"
+  },
+  {
+    "email": "persson.fredric@gmail.com",
+    "id": 1537170535880,
+    "password": "$2a$12$xpXWkInzOct.5lFEgZjebukRVWVoh3F0Y7qmKDyXLEr3VjfPechv2"
   }
-
 ]

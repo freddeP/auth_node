@@ -3,6 +3,8 @@ const express = require("express");
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
+const validateUser = require("./modules/validateUser");
+const jwt = require("jsonwebtoken");
 
 // applikationsvariabel
 const app = express();
@@ -16,34 +18,45 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 app.post("/login", function (req,res){
 
-   console.log(typeof req.body.user);
- 
+    // läse in user från html request
    const user = JSON.parse(req.body.user);
-   console.log(user);
+    // validera användare mot egen modul/joi 
+   const valResult = validateUser(user);
+   if(valResult)
+    {
+        fs.readFile("./.data/users.json",function(err,data){
 
-    fs.readFile("./.data/users.json",function(err,data){
-
-        if(err) throw err;
-        else
-        {
-            let users = Array.from(JSON.parse(data.toString()));
-
-            const userExists = users.find(function(u){
-                    if(u.email === user.email) return true;
-            });
-            if(userExists === undefined)
-            {
-                console.log("Login Failed");
-            }
+            if(err) throw err;
             else
             {
-                // Här skall vi nästa lektion undersöka om lösenorden är samma...
-                console.log("user found", userExists);
+                let users = Array.from(JSON.parse(data.toString()));
+                const userExists = users.find(function(u){
+                        if(u.email === user.email) return true;
+                });
+                if(userExists === undefined)
+                {
+                    console.log("Login Failed");
+                }
+                else
+                {
+                    // Här skall vi nästa lektion undersöka om lösenorden är samma...
+                    console.log("user found", userExists);
+                    bcrypt.compare(user.password,userExists.password,function(err,result){
+                       
+                        if(result) console.log("user logged in");
+                        const token = jwt.sign(userExists.id,"mySecret");
+                        res.send(token);
+                    });
+
+
+                }
+
             }
 
-        }
+        }); // end readfile
 
-    })
+    }  // end if validate
+    else res.send(valResult);
 
 
     //hitta användare i databas med hjälp av email
@@ -62,10 +75,10 @@ app.post("/login", function (req,res){
 app.get("/createuser",function(req,res){ 
     // Manuellt tillverka en ny användare
     let user = {};
-    user.email = "demo@krati.se";
+    user.email = "persson.fredric@gmail.com";
     user.id = Date.now();
 
-    let tmpPassword = "stefanochjimmy=false";
+    let tmpPassword = "jwtärnästamomentpådennalektion";
 
     bcrypt.genSalt(12,function(err,salt){
         if(err) throw err;

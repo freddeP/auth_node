@@ -23,8 +23,9 @@ req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset
 req.send("user="+JSON.stringify(user));        
 
 
-
-
+req.onload(function(data){
+    console.log(data);
+});
 
 
 }
