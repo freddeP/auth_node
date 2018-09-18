@@ -13,5 +13,15 @@
     "email": "persson.fredric@gmail.com",
     "id": 1537170535880,
     "password": "$2a$12$xpXWkInzOct.5lFEgZjebukRVWVoh3F0Y7qmKDyXLEr3VjfPechv2"
+  },
+  {
+    "email": "fredric.persson@halmstad.se",
+    "id": 1537253343744,
+    "password": "$2a$12$NXBaovEdg8wrvT6mQmZLn.tcVcoHSt4rXwZAsUpgu4hs6kcVeFIPO"
+  },
+  {
+    "email": "freddeP@halmstad.se",
+    "id": 1537253434760,
+    "password": "$2a$12$hi5OW7isw.fpVNT3qOpENuFizA2WlTRlX6ZPKL3yBjVSWTEMBptPS"
   }
 ]

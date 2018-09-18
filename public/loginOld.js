@@ -16,31 +16,7 @@ let user = {};
     user.password = password;
 
 // skicka användaruppgifter till servern
-    const url = "/login";
-    const data = JSON.stringify(user);
-
-    fetch(url,
-        {method :"post",
-        body : data,
-        headers: {"Content-Type": "application/json",
-                  "X-auth" : "testing"}
-        }   
-    ).then(res => res.json())
-     .then(response => console.log(response))
-     .catch(error => console.log(error));
-
-
-}
-
-
-
-
-
-
-
-
-
-/* const req = new XMLHttpRequest();  //ajaxobjekt
+const req = new XMLHttpRequest();  //ajaxobjekt
 
 req.open("POST","/login",true);
 req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -55,4 +31,7 @@ req.onload = function() {
     else {
         // We reached our target server, but it returned an error
     }
-} */
+}
+
+
+}

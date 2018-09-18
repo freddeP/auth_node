@@ -4,6 +4,7 @@ const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
 const validateUser = require("./modules/validateUser");
+const createUser = require("./modules/createUser");
 const jwt = require("jsonwebtoken");
 
 // applikationsvariabel
@@ -17,9 +18,13 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 
 app.post("/login", function (req,res){
-
+    // kolla request headers
+    console.log(req.headers);
     // läse in user från html request
-   const user = JSON.parse(req.body.user);
+   //const user = JSON.parse(req.body);
+   //console.log(user);
+   console.log(req.body);
+   const user = req.body;
     // validera användare mot egen modul/joi 
    const valResult = validateUser(user);
    if(valResult)
@@ -29,7 +34,8 @@ app.post("/login", function (req,res){
             if(err) throw err;
             else
             {
-                let users = Array.from(JSON.parse(data.toString()));
+                console.log("raw: ",data);
+              let users = Array.from(JSON.parse(data.toString()));
                 const userExists = users.find(function(u){
                         if(u.email === user.email) return true;
                 });
@@ -46,9 +52,10 @@ app.post("/login", function (req,res){
                         if(result) console.log("user logged in");
                         const token = jwt.sign(userExists.id,"mySecret");
                        console.log(token); 
-                       res.send(token);
+                        // send back acces token in body
+                       res.send({"token": token});
                     });
-                }
+                } 
             }
         }); // end readfile
 
@@ -62,36 +69,16 @@ app.post("/login", function (req,res){
     // om lösenordet är korrekt. SKicka meddelande samt en JWT
     // om lösenordet är inkorrekt skicka stausmeddelande
 
-
-
-
-
 });
 
 
 app.get("/createuser",function(req,res){ 
-    // Manuellt tillverka en ny användare
-    let user = {};
-    user.email = "persson.fredric@gmail.com";
-    user.id = Date.now();
+ 
+   if( createUser("freddeP@halmstad.se","testingTesting"))
+   {
+       res.send("User created");
+   }
 
-    let tmpPassword = "jwtärnästamomentpådennalektion";
-
-    bcrypt.genSalt(12,function(err,salt){
-        if(err) throw err;
-        console.log(salt);
-
-        bcrypt.hash(tmpPassword,salt,function(err,hash){
-            if(err) throw err;
-            console.log(hash);
-            res.send("hello new user");
-
-            // uppdatera vår användare
-            user.password = hash;
-            saveUser(user);
-
-        });
-    });
 });
 
 
@@ -106,28 +93,5 @@ app.listen(port,function(){
 });
 
 
-//hjälpfunktioner
+//hjälpfunktioner - flyttade till modules
 
-function saveUser(userObj){
-
-    //const users = Array.from(require("./.data/users.json"));
-    let users = "";
-fs.readFile("./.data/users.json",function(err,data){
-        
-        let tmpData = data.toString();
-        tmpData = JSON.parse(tmpData);
-        users = Array.from(tmpData);
-    
-   
-
-    users.push(userObj);
-
-    fs.writeFile("./.data/users.json",JSON.stringify(users,null,2),function(err){
-        if(err) console.log("no user added");
-        else console.log("user added");
-    });
-
-});
-
-
-}
