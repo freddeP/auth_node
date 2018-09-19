@@ -5,7 +5,6 @@ module.exports = function(user){
     const schema = Joi.object().keys({
         email: Joi.string().email({ minDomainAtoms: 2 }),
         password: Joi.string().min(10).max(40)
-        
     }).with('password', 'email');
      
   

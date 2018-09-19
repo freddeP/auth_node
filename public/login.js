@@ -26,33 +26,14 @@ let user = {};
                   "X-auth" : "testing"}
         }   
     ).then(res => res.json())
-     .then(response => console.log(response))
+     .then(response => {
+        console.log(response);
+        localStorage.setItem("auth_node_token",response.token);
+
+     })
      .catch(error => console.log(error));
 
 
 }
 
 
-
-
-
-
-
-
-
-/* const req = new XMLHttpRequest();  //ajaxobjekt
-
-req.open("POST","/login",true);
-req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-req.send("user="+JSON.stringify(user));        
-
-req.onload = function() {
-    if (req.status >= 200 && req.status < 400) {
-        // Success!
-        var data = req.responseText;
-        console.log(data);
-    } 
-    else {
-        // We reached our target server, but it returned an error
-    }
-} */

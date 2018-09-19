@@ -40,8 +40,6 @@ function saveUser(userObj){
         tmpData = JSON.parse(tmpData);
         users = Array.from(tmpData);
     
-   
-
         users.push(userObj);
 
         fs.writeFile("./.data/users.json",JSON.stringify(users,null,2),function(err){
@@ -49,7 +47,7 @@ function saveUser(userObj){
             else console.log("user added");
             return true;
         });
-
+        
     }); // end read file
-
+    return true;
 }
